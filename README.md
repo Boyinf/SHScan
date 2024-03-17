@@ -1,7 +1,7 @@
 # Security Header Scan (shscan)
 
 <p align="center">
-    <img src="google.png" alt="Result of the google" />
+    <img src="Owasp-juice.png" alt="Result of the Owasp-juice" />
 </p>
 
 ## SHScan description:
