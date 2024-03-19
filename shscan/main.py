@@ -1,14 +1,13 @@
-import sys
-import requests
+import sys, requests
 from requests.exceptions import RequestException
 from shscan import main
 
-def get_security_headers(url, ssl=False, cookies=None):
+def get_security_headers(url, ssl=False):
     try:
         if ssl:
-            response = requests.get(url, allow_redirects=True, timeout=5, verify=True, cookies=cookies)
+            response = requests.get(url, allow_redirects=True, timeout=5, verify=True)
         else:
-            response = requests.get(url, allow_redirects=True, timeout=5, verify=False, cookies=cookies)
+            response = requests.get(url, allow_redirects=True, timeout=5, verify=False)
         security_headers = {
              'Content-Security-Policy': response.headers.get('Content-Security-Policy'),
              'Strict-Transport-Security': response.headers.get('Strict-Transport-Security'),
@@ -33,15 +32,44 @@ def get_security_headers(url, ssl=False, cookies=None):
         print(f"Error requesting {url}: {e}")
         return {}
 
-def display_menu(title, url):
-
+def display_menu(title, url, headers):
     title_length = len(title) + 2
     url_length = len(url) + 2
     border_length = max(title_length, url_length) + 4
     border = "==" * border_length
     print(f"\n{border}\n {title:^{border_length}} \n")
     print(f" URL: {url:^{border_length}} \n")
-    print(border + "\n")
+    print(border)
+
+# emojis
+    emoji_verde = '\033[32m\U0001F197\033[0m |'
+    emoji_vermelho = '\033[31m\u274C\033[0m |'
+
+    implemented_headers = []
+    not_implemented_headers = []
+
+    for header, value in headers.items():
+        if value:
+            implemented_headers.append(f"{emoji_verde} {header}: {value}")
+        else:
+            not_implemented_headers.append(f"{emoji_vermelho} {header}: ")
+
+# Print headers
+
+    if implemented_headers:
+        print("\n-----------------------------------")
+        print("Implemented Headers:")
+        print("-----------------------------------\n")
+        for header in implemented_headers:
+            print(header)
+
+    if not_implemented_headers:
+        print("\n-----------------------------------")
+        print("Not implemented Headers:")
+        print("-----------------------------------\n")
+        for header in not_implemented_headers:
+            print(header)
+
 
 def help_menu():
 
@@ -51,31 +79,22 @@ def help_menu():
     print("  No options: Test the URL without SSL and without cookies.")
 
 def main():
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 2 or sys.argv[1] == "-h":
         help_menu()
-        sys.exit(1)
+        return
 
     url = sys.argv[1]
     ssl = False
 
-    i = 2
-    while i < len(sys.argv):
-        if sys.argv[i] == "-ssl":
-            ssl = True
-        else:
-            help_menu()
-            sys.exit(1)
-        i += 1
+    if len(sys.argv) == 3 and sys.argv[2] == "-ssl":
+        ssl = True
+    else:
+        print("Scanning", url)
+
 
     headers = get_security_headers(url, ssl)
-
     if headers:
-        display_menu("SECURITY HEADERS", url)
-        print(f"Security for {url}\n")
-        for header, value in headers.items():
-            emoji_verde = '\033[32m\U0001F197\033[0m |'
-            emoji_vermelho = '\033[31m\u274C\033[0m |'
-            print(f"{emoji_verde} {header}:" if value else f"{emoji_vermelho} {header}:", f"{value}" if value is not None else "")
-
+        display_menu("SECURITY HEADERS", url, headers)
+        
 if __name__ == "__main__":
     main()
