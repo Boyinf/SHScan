@@ -1,7 +1,7 @@
 # Security Header Scan (shscan)
 
 <p align="center">
-    <img src="Owasp-juice.png" alt="Result of the Owasp-juice" />
+    <img src="Owasp-juice_new.png" alt="Result of the Owasp-juice" />
 </p>
 
 ## SHScan description:
