@@ -82,7 +82,7 @@ def help_menu():
     print("Usage: python SHScan.py <URL> [-ssl]")
     print("\nOptions:")
     print("  -ssl: Test the URL with SSL enabled.")
-    print("  No options: Test the URL without SSL and without cookies.")
+    print("  No options: Test the URL without SSL")
 
 def main():
     if len(sys.argv) < 2 or sys.argv[1] == "-h":
