@@ -1,11 +1,9 @@
-import sys, requests
+import sys, requests, warnings
 from requests.exceptions import RequestException
+from urllib3.exceptions import InsecureRequestWarning
 from shscan import main
 
-import warnings
-from urllib3.exceptions import InsecureRequestWarning
 
-# Desativa o aviso temporariamente
 warnings.simplefilter('ignore', InsecureRequestWarning)
 
 def get_security_headers(url, ssl=False):
@@ -81,6 +79,7 @@ def help_menu():
 
     print("Usage: python SHScan.py <URL> [-ssl]")
     print("\nOptions:")
+    print("  -h: Open help menu.")
     print("  -ssl: Test the URL with SSL enabled.")
     print("  No options: Test the URL without SSL")
 
@@ -94,8 +93,6 @@ def main():
 
     if len(sys.argv) == 3 and sys.argv[2] == "-ssl":
         ssl = True
-    else:
-        pass
 
 
     headers = get_security_headers(url, ssl)

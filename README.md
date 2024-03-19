@@ -31,5 +31,6 @@ python ./shscan.py https://example.com.br
 Usage: shscan <target>
 
 Options:
+  -h              Open help menu
   -ssl            Test the URL with SSL enabled.
 ```
