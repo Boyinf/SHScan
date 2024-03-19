@@ -2,6 +2,12 @@ import sys, requests
 from requests.exceptions import RequestException
 from shscan import main
 
+import warnings
+from urllib3.exceptions import InsecureRequestWarning
+
+# Desativa o aviso temporariamente
+warnings.simplefilter('ignore', InsecureRequestWarning)
+
 def get_security_headers(url, ssl=False):
     try:
         if ssl:
@@ -89,7 +95,7 @@ def main():
     if len(sys.argv) == 3 and sys.argv[2] == "-ssl":
         ssl = True
     else:
-        print("Scanning", url)
+        pass
 
 
     headers = get_security_headers(url, ssl)
